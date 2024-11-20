@@ -1,10 +1,10 @@
-import {  useState } from "react"
+
 import { NavLink, Link } from "react-router-dom"
 import Logout from "../auth/Logout"
 
 
 const NavBar = () => {
-	const [showAccount, setShowAccount] = useState(false)
+	// const [showAccount, setShowAccount] = useState(false)
 
 	// const handleAccountClick = () => {
 	// 	setShowAccount(!showAccount)
@@ -57,9 +57,9 @@ const NavBar = () => {
 
 						
 						{isLoggedIn ? (
-							<li className="nav-item">
+							
 								<Logout className="nav-link" />
-							</li>
+							
 									
 								) : (
 									<li className="nav-item">
