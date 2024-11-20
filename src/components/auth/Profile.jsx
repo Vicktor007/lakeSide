@@ -1,7 +1,7 @@
 import  { useEffect, useState } from "react"
 import { deleteUser, getBookingsByUserId, getUser } from "../utils/ApiFunctions"
 import { useNavigate } from "react-router-dom"
-import moment from "moment"
+
 
 const Profile = () => {
 	const [user, setUser] = useState({
@@ -75,6 +75,9 @@ const Profile = () => {
 		}
 	}
 
+
+	
+	
 	return (
 		<div className="container">
 			{errorMessage && <p className="text-danger">{errorMessage}</p>}
@@ -151,6 +154,7 @@ const Profile = () => {
 							<h4 className="card-title text-center">Booking History</h4>
 
 							{bookings.length > 0 ? (
+								<div className="table-responsive">
 								<table className="table table-bordered table-hover shadow">
 									<thead>
 										<tr>
@@ -170,12 +174,10 @@ const Profile = () => {
 												<td>{booking.room.id}</td>
 												<td>{booking.room.roomType}</td>
 												<td>
-													{moment(booking.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+													{booking.checkInDate}
 												</td>
 												<td>
-													{moment(booking.checkOutDate)
-														.subtract(1, "month")
-														.format("MMM Do, YYYY")}
+													{booking.checkOutDate}
 												</td>
 												<td>{booking.bookingConfirmationCode}</td>
 												<td className="text-success">On-going</td>
@@ -183,6 +185,8 @@ const Profile = () => {
 										))}
 									</tbody>
 								</table>
+							</div>
+							
 							) : (
 								<p>You have not made any bookings yet.</p>
 							)}

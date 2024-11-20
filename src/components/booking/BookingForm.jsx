@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
+import  { useEffect } from "react"
 import moment from "moment"
 import { useState } from "react"
-import { Form, FormControl, Button } from "react-bootstrap"
+import { Form, FormControl } from "react-bootstrap"
 import BookingSummary from "./BookingSummary"
 import { bookRoom, getRoomById } from "../utils/ApiFunctions"
 import { useNavigate, useParams } from "react-router-dom"
-import { useAuth } from "../auth/AuthProvider"
+
 
 const BookingForm = () => {
 	const [validated, setValidated] = useState(false)
@@ -15,7 +15,7 @@ const BookingForm = () => {
 
 const currentUser = localStorage.getItem("userId")
 
-	const [booking, setBooking] = useState({
+	const [bookingDetails, setBookingDetails] = useState({
 		guestFullName: "",
 		guestEmail: currentUser,
 		checkInDate: "",
@@ -29,7 +29,7 @@ const currentUser = localStorage.getItem("userId")
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target
-		setBooking({ ...booking, [name]: value })
+		setBookingDetails({ ...bookingDetails, [name]: value })
 		setErrorMessage("")
 	}
 
@@ -48,22 +48,24 @@ const currentUser = localStorage.getItem("userId")
 	}, [roomId])
 
 	const calculatePayment = () => {
-		const checkInDate = moment(booking.checkInDate)
-		const checkOutDate = moment(booking.checkOutDate)
+		const checkInDate = moment(bookingDetails.checkInDate)
+		const checkOutDate = moment(bookingDetails.checkOutDate)
+
+
 		const diffInDays = checkOutDate.diff(checkInDate, "days")
 		const paymentPerDay = roomPrice ? roomPrice : 0
 		return diffInDays * paymentPerDay
 	}
 
 	const isGuestCountValid = () => {
-		const adultCount = parseInt(booking.numOfAdults)
-		const childrenCount = parseInt(booking.numOfChildren)
+		const adultCount = parseInt(bookingDetails.numOfAdults)
+		const childrenCount = parseInt(bookingDetails.numOfChildren)
 		const totalCount = adultCount + childrenCount
 		return totalCount >= 1 && adultCount >= 1
 	}
 
 	const isCheckOutDateValid = () => {
-		if (!moment(booking.checkOutDate).isSameOrAfter(moment(booking.checkInDate))) {
+		if (!moment(bookingDetails.checkOutDate).isSameOrAfter(moment(bookingDetails.checkInDate))) {
 			setErrorMessage("Check-out date must be after check-in date")
 			return false
 		} else {
@@ -85,6 +87,35 @@ const currentUser = localStorage.getItem("userId")
 
 	const handleFormSubmit = async () => {
 		try {
+
+			// Ensure checkInDate and checkOutDate are Date objects
+			const startDate = new Date(bookingDetails.checkInDate);
+			const endDate = new Date(bookingDetails.checkOutDate);
+		// Log the original dates for debugging
+			console.log("Original Check-in Date:", startDate);
+			console.log("Original Check-out Date:", endDate);
+	// Convert dates to YYYY-MM-DD format, adjusting for time zone differences
+			const formattedCheckInDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+			const formattedCheckOutDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+
+			// Log the original dates for debugging
+			console.log("Formated Check-in Date:", formattedCheckInDate);
+			console.log("Formated Check-out Date:", formattedCheckOutDate);
+
+
+			// Create booking object
+			const booking = {
+				checkInDate: formattedCheckInDate,
+				checkOutDate: formattedCheckOutDate,
+				guestEmail: bookingDetails.guestEmail,
+				guestFullName: bookingDetails.guestFullName,
+				numOfAdults: bookingDetails.numOfAdults,
+				numOfChildren: bookingDetails.numOfChildren
+				
+               };
+				console.log(booking)
+				console.log(booking.checkOutDate)
+
 			const confirmationCode = await bookRoom(roomId, booking)
 			setIsSubmitted(true)
 			navigate("/booking-success", { state: { message: confirmationCode } })
@@ -113,7 +144,7 @@ const currentUser = localStorage.getItem("userId")
 										type="text"
 										id="guestFullName"
 										name="guestFullName"
-										value={booking.guestFullName}
+										value={bookingDetails.guestFullName}
 										placeholder="Enter your fullname"
 										onChange={handleInputChange}
 									/>
@@ -131,7 +162,7 @@ const currentUser = localStorage.getItem("userId")
 										type="email"
 										id="guestEmail"
 										name="guestEmail"
-										value={booking.guestEmail}
+										value={bookingDetails.guestEmail}
 										placeholder="Enter your email"
 										onChange={handleInputChange}
 										disabled
@@ -153,7 +184,7 @@ const currentUser = localStorage.getItem("userId")
 												type="date"
 												id="checkInDate"
 												name="checkInDate"
-												value={booking.checkInDate}
+												value={bookingDetails.checkInDate}
 												placeholder="check-in-date"
 												min={moment().format("MMM Do, YYYY")}
 												onChange={handleInputChange}
@@ -172,9 +203,9 @@ const currentUser = localStorage.getItem("userId")
 												type="date"
 												id="checkOutDate"
 												name="checkOutDate"
-												value={booking.checkOutDate}
+												value={bookingDetails.checkOutDate}
 												placeholder="check-out-date"
-												min={moment().format("MMM Do, YYYY")}
+												dateFormat="dd/MM/yyyy"
 												onChange={handleInputChange}
 											/>
 											<Form.Control.Feedback type="invalid">
@@ -197,7 +228,7 @@ const currentUser = localStorage.getItem("userId")
 												type="number"
 												id="numOfAdults"
 												name="numOfAdults"
-												value={booking.numOfAdults}
+												value={bookingDetails.numOfAdults}
 												min={1}
 												placeholder="0"
 												onChange={handleInputChange}
@@ -215,7 +246,7 @@ const currentUser = localStorage.getItem("userId")
 												type="number"
 												id="numOfChildren"
 												name="numOfChildren"
-												value={booking.numOfChildren}
+												value={bookingDetails.numOfChildren}
 												placeholder="0"
 												min={0}
 												onChange={handleInputChange}
@@ -239,7 +270,7 @@ const currentUser = localStorage.getItem("userId")
 					<div className="col-md-4">
 						{isSubmitted && (
 							<BookingSummary
-								booking={booking}
+								booking={bookingDetails}
 								payment={calculatePayment()}
 								onConfirm={handleFormSubmit}
 								isFormValid={validated}
