@@ -29,6 +29,7 @@ const Login = () => {
 			const token = success.token
 			auth.handleLogin(token)
 			navigate(redirectUrl, { replace: true })
+			window.location.reload();
 		} 
 		
 		} catch (error) {
@@ -83,7 +84,7 @@ const Login = () => {
 						{loading ? ("Logging in") :("Login")}
 					</button>
 					<span style={{ marginLeft: "10px" }}>
-						Don't' have an account yet?<Link to={"/register"}> Register</Link>
+						Don&apos;t have an account yet?<Link to={"/register"}> Register</Link>
 					</span>
 				</div>
 			</form>
