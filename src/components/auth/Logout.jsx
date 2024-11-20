@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { AuthContext } from "./AuthProvider"
-import { Link, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 const Logout = () => {
 	const auth = useContext(AuthContext)
@@ -15,9 +15,9 @@ const Logout = () => {
 	return (
 		<>
 			<li className="nav-item">
-				<Link className="nav-link" to={"/profile"}>
+				<NavLink className="nav-link" to={"/profile"}>
 					Profile
-				</Link>
+				</NavLink>
 			</li>
 			<li>
 				<hr className="dropdown-divider" />
