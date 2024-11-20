@@ -81,7 +81,7 @@ const Login = () => {
 
 				<div className="mb-3">
 					<button disabled={loading} type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-						{loading ? ("Logging in") :("Login")}
+						{loading ? ("Logging in...") :("Login")}
 					</button>
 					<span style={{ marginLeft: "10px" }}>
 						Don&apos;t have an account yet?<Link to={"/register"}> Register</Link>
