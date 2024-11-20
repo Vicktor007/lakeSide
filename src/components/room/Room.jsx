@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
+import  { useEffect, useState } from "react"
 import { getAllRooms } from "../utils/ApiFunctions"
 import RoomCard from "./RoomCard"
 import { Col, Container, Row } from "react-bootstrap"
 import RoomFilter from "../common/RoomFilter"
 import RoomPaginator from "../common/RoomPaginator"
+import { BounceLoader } from "react-spinners"
 
 const Room = () => {
 	const [data, setData] = useState([])
@@ -27,7 +28,8 @@ const Room = () => {
 			})
 	}, [])
 	if (isLoading) {
-		return <div>Loading rooms.....</div>
+		return <div className="d-flex align-items-center justify-content-center"> <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Loading rooms....</span> </> </div>
 	}
 	if (error) {
 		return <div className=" text-danger">Error : {error}</div>

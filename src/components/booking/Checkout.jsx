@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom"
 import { getRoomById } from "../utils/ApiFunctions"
 import RoomCarousel from "../common/RoomCarousel"
+import { BounceLoader } from "react-spinners"
 
 const Checkout = () => {
 	const [error, setError] = useState(null)
@@ -45,7 +46,8 @@ const Checkout = () => {
 				<div className="row">
 					<div className="col-md-4 mt-5 mb-5">
 						{isLoading ? (
-							<p>Loading room information...</p>
+							<div className="d-flex mt-5 align-items-center justify-content-center"> <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Loading room Information...</span> </> </div>
 						) : error ? (
 							<p>{error}</p>
 						) : (

@@ -1,6 +1,7 @@
 import  { useState } from "react"
 import { registerUser } from "../utils/ApiFunctions"
 import { Link } from "react-router-dom"
+import { BounceLoader } from "react-spinners"
 
 const Registration = () => {
 	const [registration, setRegistration] = useState({
@@ -9,6 +10,7 @@ const Registration = () => {
 		email: "",
 		password: ""
 	})
+	const [loading, setLoading] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState("")
 	const [successMessage, setSuccessMessage] = useState("")
@@ -20,6 +22,7 @@ const Registration = () => {
 	const handleRegistration = async (e) => {
 		e.preventDefault()
 		try {
+			setLoading(true);
 			const result = await registerUser(registration)
 			setSuccessMessage(result)
 			setErrorMessage("")
@@ -27,12 +30,13 @@ const Registration = () => {
 		} catch (error) {
 			setSuccessMessage("")
 			setErrorMessage(`Registration error : ${error.message}`)
-		}
+		} finally{
+			setLoading(false);
 		setTimeout(() => {
 			setErrorMessage("")
 			setSuccessMessage("")
 		}, 5000)
-	}
+	}}
 
 	return (
 		<section className="container col-6 mt-5 mb-5">
@@ -105,8 +109,11 @@ const Registration = () => {
 					</div>
 				</div>
 				<div className="mb-3">
-					<button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-						Register
+					<button type="submit" className="btn btn-hotel d-flex align-items-center justify-content-center" style={{ marginRight: "10px" }}>
+						{loading ? (
+							<> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Registering...</span> </> 
+						):("Register")}
 					</button>
 					<span style={{ marginLeft: "10px" }}>
 						Already have an account? <Link to={"/login"}>Login</Link>

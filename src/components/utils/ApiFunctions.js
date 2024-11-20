@@ -170,15 +170,12 @@ export async function loginUser(login) {
 }
 
 /*  This is function to get the user profile */
-export async function getUserProfile(userId, token) {
-	try {
+export async function getUserProfile(userId) {
+	
 		const response = await api.get(`users/profile/${userId}`, {
 			headers: getHeader()
 		})
 		return response.data
-	} catch (error) {
-		throw error
-	}
 }
 
 /* This isthe function to delete a user */
@@ -194,19 +191,16 @@ export async function deleteUser(userId) {
 }
 
 /* This is the function to get a single user */
-export async function getUser(userId, token) {
-	try {
+export async function getUser(userId) {
+	
 		const response = await api.get(`/users/${userId}`, {
 			headers: getHeader()
 		})
 		return response.data
-	} catch (error) {
-		throw error
-	}
 }
 
 /* This is the function to get user bookings by the user id */
-export async function getBookingsByUserId(userId, token) {
+export async function getBookingsByUserId(userId) {
 	try {
 		const response = await api.get(`/bookings/user/${userId}/bookings`, {
 			headers: getHeader()

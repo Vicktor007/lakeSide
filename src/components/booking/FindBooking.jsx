@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import moment from "moment"
 import { cancelBooking, getBookingByConfirmationCode } from "../utils/ApiFunctions"
+import { BounceLoader } from "react-spinners"
 
 const FindBooking = () => {
 	const [confirmationCode, setConfirmationCode] = useState("")
@@ -60,7 +61,7 @@ const FindBooking = () => {
 		setTimeout(() => setIsLoading(false), 2000)
 	}
 
-	const handleBookingCancellation = async (bookingId) => {
+	const handleBookingCancellation = async () => {
 		try {
 			await cancelBooking(bookingInfo.id)
 			setIsDeleted(true)
@@ -100,7 +101,8 @@ const FindBooking = () => {
 				</form>
 
 				{isLoading ? (
-					<div>Finding your booking...</div>
+					<div className="d-flex align-items-center justify-content-center"> <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Finding your booking...</span> </>  </div>
 				) : error ? (
 					<div className="text-danger">Error: {error}</div>
 				) : bookingInfo.bookingConfirmationCode ? (

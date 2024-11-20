@@ -1,7 +1,8 @@
 import  { useState } from "react"
 import { loginUser } from "../utils/ApiFunctions"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useAuth } from "./AuthProvider"
+import { useAuth } from "./auth"
+import { BounceLoader } from "react-spinners"
 
 const Login = () => {
 	const [errorMessage, setErrorMessage] = useState("")
@@ -80,9 +81,12 @@ const Login = () => {
 				</div>
 
 				<div className="mb-3">
-					<button disabled={loading} type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-						{loading ? ("Logging in...") :("Login")}
-					</button>
+				
+
+				<button disabled={loading} type="submit" className="btn btn-hotel d-flex align-items-center justify-content-center" style={{ marginRight: "10px" }}>
+						{loading ? ( <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Logging in...</span> </> ) : ( "Login" )} </button>
+
 					<span style={{ marginLeft: "10px" }}>
 						Don&apos;t have an account yet?<Link to={"/register"}> Register</Link>
 					</span>

@@ -5,6 +5,7 @@ import RoomFilter from "../common/RoomFilter"
 import RoomPaginator from "../common/RoomPaginator"
 import { FaEdit, FaEye, FaPlus, FaTrashAlt } from "react-icons/fa"
 import { Link } from "react-router-dom"
+import { BounceLoader } from "react-spinners"
 
 const ExistingRooms = () => {
 	const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "" }])
@@ -82,7 +83,8 @@ const ExistingRooms = () => {
 			</div>
 
 			{isLoading ? (
-				<p>Loading existing rooms</p>
+				<div className="d-flex mt-5 align-items-center justify-content-center"> <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Loading existing rooms...</span> </> </div>
 			) : (
 				<>
 					<section className="mt-5 mb-5 container">
@@ -123,7 +125,9 @@ const ExistingRooms = () => {
 												<span className="btn btn-info btn-sm">
 													<FaEye />
 												</span>
-												<span className="btn btn-warning btn-sm ml-5">
+											</Link>
+											<Link to={`/edit-room/${room.id}`}>
+												<span className="btn btn-warning btn-sm m-2">
 													<FaEdit />
 												</span>
 											</Link>

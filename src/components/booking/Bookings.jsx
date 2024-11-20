@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { cancelBooking, getAllBookings } from "../utils/ApiFunctions"
 import Header from "../common/Header"
 import BookingsTable from "./BookingsTable"
+import { BounceLoader } from "react-spinners"
 
 const Bookings = () => {
 	const [bookingInfo, setBookingInfo] = useState([])
@@ -33,11 +34,12 @@ const Bookings = () => {
 	}
 
 	return (
-		<section style={{ backgroundColor: "whitesmoke" }}>
+		<section style={{ backgroundColor: "whitesmoke" }} className="pb-5">
 			<Header title={"Existing Bookings"} />
 			{error && <div className="text-danger">{error}</div>}
 			{isLoading ? (
-				<div>Loading existing bookings</div>
+				<div className="d-flex align-items-center justify-content-center mt-5"> <> <BounceLoader color='rgb(169, 77, 123)' size={24} /> 
+						<span className="ms-2">Loading existing bookings...</span> </>  </div>
 			) : (
 				<BookingsTable
 					bookingInfo={bookingInfo}
