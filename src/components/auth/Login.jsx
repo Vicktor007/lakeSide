@@ -34,7 +34,7 @@ const Login = () => {
 		} 
 		
 		} catch (error) {
-			setErrorMessage(error + "Invalid username or password. Please try again.")
+			setErrorMessage("Invalid username or password. Please try again.")
 			setTimeout(() => {
 				setErrorMessage("")
 			}, 4000)
