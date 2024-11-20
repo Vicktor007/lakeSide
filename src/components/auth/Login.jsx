@@ -1,10 +1,11 @@
-import React, { useState } from "react"
+import  { useState } from "react"
 import { loginUser } from "../utils/ApiFunctions"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "./AuthProvider"
 
 const Login = () => {
 	const [errorMessage, setErrorMessage] = useState("")
+	const [loading, setLoading] = useState(false);
 	const [login, setLogin] = useState({
 		email: "",
 		password: ""
@@ -21,17 +22,23 @@ const Login = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+		try {
+			setLoading(true);
 		const success = await loginUser(login)
 		if (success) {
 			const token = success.token
 			auth.handleLogin(token)
 			navigate(redirectUrl, { replace: true })
-		} else {
-			setErrorMessage("Invalid username or password. Please try again.")
+		} 
+		
+		} catch (error) {
+			setErrorMessage(error + "Invalid username or password. Please try again.")
+			setTimeout(() => {
+				setErrorMessage("")
+			}, 4000)
+		} finally {
+			setLoading(false);
 		}
-		setTimeout(() => {
-			setErrorMessage("")
-		}, 4000)
 	}
 
 	return (
@@ -72,8 +79,8 @@ const Login = () => {
 				</div>
 
 				<div className="mb-3">
-					<button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-						Login
+					<button disabled={loading} type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
+						{loading ? ("Logging in") :("Login")}
 					</button>
 					<span style={{ marginLeft: "10px" }}>
 						Don't' have an account yet?<Link to={"/register"}> Register</Link>

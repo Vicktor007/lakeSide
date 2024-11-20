@@ -6,9 +6,9 @@ import Logout from "../auth/Logout"
 const NavBar = () => {
 	const [showAccount, setShowAccount] = useState(false)
 
-	const handleAccountClick = () => {
-		setShowAccount(!showAccount)
-	}
+	// const handleAccountClick = () => {
+	// 	setShowAccount(!showAccount)
+	// }
 
 	const isLoggedIn = localStorage.getItem("token")
 	const userRole = localStorage.getItem("userRole")
@@ -31,7 +31,7 @@ const NavBar = () => {
 					<span className="navbar-toggler-icon"></span>
 				</button>
 
-				<div className="collapse navbar-collapse" id="navbarScroll">
+				<div className="collapse navbar-collapse mx-2" id="navbarScroll">
 					<ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
 						<li className="nav-item">
 							<NavLink className="nav-link" aria-current="page" to={"/browse-all-rooms"}>
@@ -55,32 +55,22 @@ const NavBar = () => {
 							</NavLink>
 						</li>
 
-						<li className="nav-item dropdown">
-							<a
-								className={`nav-link dropdown-toggle ${showAccount ? "show" : ""}`}
-								href="#"
-								role="button"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-								onClick={handleAccountClick}>
-								{" "}
-								Account
-							</a>
-
-							<ul
-								className={`dropdown-menu ${showAccount ? "show" : ""}`}
-								aria-labelledby="navbarDropdown">
-								{isLoggedIn ? (
-									<Logout />
+						
+						{isLoggedIn ? (
+							<li className="nav-item">
+								<Logout className="nav-link" />
+							</li>
+									
 								) : (
-									<li>
-										<Link className="dropdown-item" to={"/login"}>
+									<li className="nav-item">
+										<Link className="nav-link" to={"/login"}>
 											Login
 										</Link>
 									</li>
-								)}
-							</ul>
-						</li>
+								)}	
+
+							
+						
 					</ul>
 				</div>
 			</div>
