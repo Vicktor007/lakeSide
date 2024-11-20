@@ -26,7 +26,7 @@ const RoomTypeSelector = ({ handleRoomInputChange, newRoom }) => {
 
 	return (
 		<>
-			{roomTypes.length > 0 && (
+			
 				<div>
 					<select
 						required
@@ -65,7 +65,7 @@ const RoomTypeSelector = ({ handleRoomInputChange, newRoom }) => {
 						</div>
 					)}
 				</div>
-			)}
+			
 		</>
 	)
 }
