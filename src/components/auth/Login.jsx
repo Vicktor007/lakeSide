@@ -1,4 +1,4 @@
-import  { useState } from "react"
+import  { useEffect, useState } from "react"
 import { loginUser } from "../utils/ApiFunctions"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "./auth"
@@ -7,6 +7,7 @@ import { BounceLoader } from "react-spinners"
 const Login = () => {
 	const [errorMessage, setErrorMessage] = useState("")
 	const [loading, setLoading] = useState(false);
+	const [showMessage, setShowMessage] = useState(true);
 	const [login, setLogin] = useState({
 		email: "",
 		password: ""
@@ -16,6 +17,14 @@ const Login = () => {
 	const auth = useAuth()
 	const location = useLocation()
 	const redirectUrl = location.state?.path || "/"
+
+	const message = location.state && location.state.message
+	
+	useEffect(() => { if ( message) { const timer = setTimeout(() => { setShowMessage(false); }, 5000);
+		// 5 seconds 
+		return () => clearTimeout(timer);
+		// Cleanup the timer on component unmount
+		} }, [message]);
 
 	const handleInputChange = (e) => {
 		setLogin({ ...login, [e.target.name]: e.target.value })
@@ -45,6 +54,7 @@ const Login = () => {
 
 	return (
 		<section className="container col-6 mt-5 mb-5">
+			{message && showMessage && (<h6 className="text-success text-center">{message}</h6>)}
 			{errorMessage && <p className="alert alert-danger">{errorMessage}</p>}
 			<h2>Login</h2>
 			<form onSubmit={handleSubmit}>
